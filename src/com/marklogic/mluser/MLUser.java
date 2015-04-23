@@ -89,7 +89,7 @@ public class MLUser {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 827, 415);
+		frame.setBounds(100, 100, 827, 615);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
@@ -116,7 +116,7 @@ public class MLUser {
 				return values[index];
 			}
 		});
-		lstKnownServers.setBounds(6, 165, 350, 100);
+		lstKnownServers.setBounds(6, 165, 350, 200);
 		frame.getContentPane().add(lstKnownServers);
 		
 		JLabel lblServers = new JLabel("Known Servers");
@@ -137,7 +137,7 @@ public class MLUser {
 		frame.getContentPane().add(lblApplyTo);
 		
 		lstApplyServers = new JList();
-		lstApplyServers.setBounds(450, 165, 350, 100);
+		lstApplyServers.setBounds(450, 165, 350, 200);
 		frame.getContentPane().add(lstApplyServers);
 		
 		JButton btnAdd = new JButton("Add");
@@ -163,6 +163,22 @@ public class MLUser {
 		});
 		btnClear.setBounds(360, 211, 87, 29);
 		frame.getContentPane().add(btnClear);
+		
+		JButton btnDelete = new JButton("Delete");
+		btnDelete.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Vector<Server> servers = new Vector<Server>();
+				int i;
+				for (i = 0; i < lstKnownServers.getModel().getSize(); i++)
+					servers.add((Server)lstKnownServers.getModel().getElementAt(i));
+				for (i = 0; i < lstKnownServers.getSelectedValues().length; i++)
+					servers.remove(lstKnownServers.getSelectedValues()[i]);
+				lstKnownServers.setListData(servers);
+				storeServers(servers);
+			}
+		});
+		btnDelete.setBounds(360, 246, 87, 29);
+		frame.getContentPane().add(btnDelete);
 		
 		ButtonGroup actionGroup = new ButtonGroup();
 		
@@ -313,11 +329,11 @@ public class MLUser {
 		frame.getContentPane().add(btnGo);
 		
 		JLabel lblNewServer = new JLabel("New Server");
-		lblNewServer.setBounds(6, 277, 95, 16);
+		lblNewServer.setBounds(6, 377, 95, 16);
 		frame.getContentPane().add(lblNewServer);
 		
 		txtServerAddr = new JTextField();
-		txtServerAddr.setBounds(6, 322, 288, 28);
+		txtServerAddr.setBounds(6, 422, 288, 28);
 		frame.getContentPane().add(txtServerAddr);
 		txtServerAddr.setColumns(10);
 		
@@ -338,7 +354,7 @@ public class MLUser {
 				storeServers(servers);
 			}
 		});
-		btnAddServer.setBounds(6, 350, 117, 29);
+		btnAddServer.setBounds(6, 450, 117, 29);
 		frame.getContentPane().add(btnAddServer);
 		
 		JSeparator separator = new JSeparator();
@@ -346,38 +362,38 @@ public class MLUser {
 		frame.getContentPane().add(separator);
 		
 		JSeparator separator_1 = new JSeparator();
-		separator_1.setBounds(6, 270, 815, 12);
+		separator_1.setBounds(6, 370, 815, 12);
 		frame.getContentPane().add(separator_1);
 		
 		JLabel lblAddress = new JLabel("Address");
-		lblAddress.setBounds(6, 305, 61, 16);
+		lblAddress.setBounds(6, 405, 61, 16);
 		frame.getContentPane().add(lblAddress);
 		
 		JLabel lblAdminUser = new JLabel("Admin User");
-		lblAdminUser.setBounds(397, 305, 78, 16);
+		lblAdminUser.setBounds(397, 405, 78, 16);
 		frame.getContentPane().add(lblAdminUser);
 		
 		JLabel lblAdminPassword = new JLabel("Admin Password");
-		lblAdminPassword.setBounds(504, 305, 109, 16);
+		lblAdminPassword.setBounds(504, 405, 109, 16);
 		frame.getContentPane().add(lblAdminPassword);
 		
 		txtAdminUser = new JTextField();
 		txtAdminUser.setText("admin");
-		txtAdminUser.setBounds(396, 322, 95, 28);
+		txtAdminUser.setBounds(396, 422, 95, 28);
 		frame.getContentPane().add(txtAdminUser);
 		txtAdminUser.setColumns(10);
 		
 		txtAdminPassword = new JTextField();
-		txtAdminPassword.setBounds(504, 322, 134, 28);
+		txtAdminPassword.setBounds(504, 422, 134, 28);
 		frame.getContentPane().add(txtAdminPassword);
 		txtAdminPassword.setColumns(10);
 		
 		JLabel lblNewLabel = new JLabel("Port");
-		lblNewLabel.setBounds(298, 305, 61, 16);
+		lblNewLabel.setBounds(298, 405, 61, 16);
 		frame.getContentPane().add(lblNewLabel);
 		
 		txtServerPort = new JTextField();
-		txtServerPort.setBounds(297, 322, 87, 28);
+		txtServerPort.setBounds(297, 422, 87, 28);
 		frame.getContentPane().add(txtServerPort);
 		txtServerPort.setColumns(10);
 		

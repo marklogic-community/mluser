@@ -1,23 +1,300 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                      http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+  
+  <!-- For general documentation on POMs see https://maven.apache.org/pom.html -->
+  
+  <!-- The Basics -->
   <groupId>com.marklogic</groupId>
   <artifactId>mluser</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>MLUser</name>
-  <description>Tool for creating and deleting users and for reseting passwords on multiple, unclustered MarkLogic instances.</description>
+  <packaging>jar</packaging>
+  <!--parent></parent-->
+  
+  <modules/>
+  
+  <!-- Run mvn versions:display-property-updates to check (possible) versions.. -->
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <github-uri>https://github.com/marklogic/mluser</github-uri>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>com.marklogic</groupId>
+        <artifactId>marklogic-xcc</artifactId>
+        <version>6.0.2</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>com.marklogic</groupId>
+      <artifactId>marklogic-xcc</artifactId>
+    </dependency>
+  </dependencies>
+
+  <!-- Build Settings -->
   <build>
-    <sourceDirectory>src</sourceDirectory>
+    <!-- src is only dir that matters -->
+    <sourceDirectory>${project.basedir}/src</sourceDirectory>
+
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>2.3.2</version>
+      </plugin>
+      
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
         <configuration>
-          <source>1.6</source>
-          <target>1.6</target>
+          <archive>
+            <manifest>
+              <mainClass>com.marklogic.mluser.MLUser</mainClass>
+            </manifest>
+          </archive>
         </configuration>
       </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-dependencies</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy-dependencies</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${basedir}/dist</outputDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      
+      <plugin>
+        <artifactId>maven-resources-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>copy-jar</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${basedir}/dist</outputDirectory>
+              <resources>          
+                <resource>
+                  <directory>${project.build.directory}</directory>
+                  <filtering>false</filtering>
+                  <includes>
+                    <include>**/*.jar</include>
+                  </includes>
+                </resource>
+              </resources>              
+            </configuration>            
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
+    
+    <!-- Run mvn versions:display-plugin-updates to check versions.. -->
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-clean-plugin</artifactId>
+          <version>2.5</version>
+        </plugin>
+        
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.1</version>
+          <configuration>
+            <source>1.6</source>
+            <target>1.6</target>
+          </configuration>
+        </plugin>
+      
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <version>2.8</version>
+        </plugin>
+        
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-deploy-plugin</artifactId>
+          <version>2.8.1</version>
+        </plugin>
+        
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-install-plugin</artifactId>
+          <version>2.5.1</version>
+        </plugin>
+        
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>2.4</version>
+          <configuration>
+            <archive>
+              <index>true</index>
+              <manifest>
+                <addClasspath>true</addClasspath>
+                <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
+              </manifest>
+            </archive>
+          </configuration>
+        </plugin>
+
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>2.6</version>
+        </plugin>
+        
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-site-plugin</artifactId>
+          <version>3.3</version>
+        </plugin>
+        
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-surefire-plugin</artifactId>
+          <version>2.17</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
   </build>
+  
+  <reporting/>
+
+  <!-- More Project Information -->
+  <name>MLUser</name>
+  <description>Tool for creating and deleting users and for reseting passwords on multiple, unclustered MarkLogic instances.</description>
+  <url>https://github.com/marklogic/mluser</url>
+  <inceptionYear>2013</inceptionYear>
+  <licenses>
+    <!--license>
+      <name>Apache License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>manual</distribution>
+      <comments>A business-friendly OSS license</comments>
+    </license-->
+  </licenses>
+
+  <organization>
+    <name>MarkLogic</name>
+    <url>http://www.marklogic.com</url>
+  </organization>
+
+  <developers>
+    <developer>
+      <id>dca</id>
+      <name>Dave Cassel</name>
+      <email/>
+      <url/>
+      <organization>MarkLogic</organization>
+      <organizationUrl>http://www.marklogic.com</organizationUrl>
+      <roles>
+        <role>architect</role>
+        <role>developer</role>
+      </roles>
+      <timezone>-6</timezone>
+      <properties>
+        <picUrl/>
+      </properties>
+    </developer>
+    
+    <developer>
+      <id>gjo</id>
+      <name>Geert Josten</name>
+      <email/>
+      <url/>
+      <organization>MarkLogic</organization>
+      <organizationUrl>http://www.marklogic.com</organizationUrl>
+      <roles>
+        <role>developer</role>
+      </roles>
+      <timezone>+1</timezone>
+      <properties>
+        <picUrl/>
+      </properties>
+    </developer>
+  </developers>
+
+  <contributors>
+    <!--contributor>
+      <name>Noelle</name>
+      <email>some.name@gmail.com</email>
+      <url>http://noellemarie.com</url>
+      <organization>Noelle Marie</organization>
+      <organizationUrl>http://noellemarie.com</organizationUrl>
+      <roles>
+        <role>tester</role>
+      </roles>
+      <timezone>America/Vancouver</timezone>
+      <properties>
+        <gtalk>some.name@gmail.com</gtalk>
+      </properties>
+    </contributor-->
+  </contributors>
+
+  <!-- Environment Settings -->
+  <issueManagement>
+    <system>Github</system>
+    <url>${github-uri}/issues</url>
+  </issueManagement>
+  
+  <!--ciManagement>
+    <system>continuum</system>
+    <url>http://127.0.0.1:8080/continuum</url>
+    <notifiers>
+      <notifier>
+        <type>mail</type>
+        <sendOnError>true</sendOnError>
+        <sendOnFailure>true</sendOnFailure>
+        <sendOnSuccess>false</sendOnSuccess>
+        <sendOnWarning>false</sendOnWarning>
+        <configuration><address>continuum@127.0.0.1</address></configuration>
+      </notifier>
+    </notifiers>
+  </ciManagement-->
+  
+  <mailingLists>
+    <mailingList>
+      <name>MarkLogic Developer Discussion</name>
+      <subscribe>http://developer.marklogic.com/mailman/options/general</subscribe>
+      <unsubscribe>http://developer.marklogic.com/mailman/options/general</unsubscribe>
+      <post>general@developer.marklogic.com</post>
+      <archive>http://marklogic.markmail.org/</archive>
+      <!--otherArchives>
+        <otherArchive>http://base.google.com/base/1/127.0.0.1</otherArchive>
+      </otherArchives-->
+    </mailingList>
+  </mailingLists>
+  
+  <scm>
+    <connection>scm:git:${github-uri}</connection>
+    <developerConnection>scm:git:${github-uri}</developerConnection>
+    <tag>HEAD</tag>
+    <url>${github-uri}</url>
+  </scm>
+  
+  <!-- Run mvn versions:display-plugin-updates to check prerequisites.. -->
+  <prerequisites>
+      <maven>2.2.1</maven>
+  </prerequisites>
+  
   <repositories>
     <repository>
       <snapshots>
@@ -28,11 +305,9 @@
       <url>http://developer.marklogic.com/maven2</url>
     </repository>
   </repositories>
-  <dependencies>
-  	<dependency>
-  		<groupId>com.marklogic</groupId>
-  		<artifactId>marklogic-xcc</artifactId>
-  		<version>6.0.2</version>
-  	</dependency>
-  </dependencies>
+  <pluginRepositories/>
+  
+  <!--distributionManagement>...</distributionManagement>
+  <profiles>...</profiles-->
+  
 </project>
