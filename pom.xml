@@ -27,7 +27,7 @@
       <dependency>
         <groupId>com.marklogic</groupId>
         <artifactId>marklogic-xcc</artifactId>
-        <version>6.0.2</version>
+        <version>8.0.3</version>
       </dependency>
     </dependencies>
   </dependencyManagement>
@@ -300,8 +300,8 @@
       <snapshots>
         <enabled>false</enabled>
       </snapshots>
-      <id>central</id>
-      <name>MarkLogic</name>
+      <id>MarkLogic-releases</id>
+      <name>MarkLogic Releases</name>
       <url>http://developer.marklogic.com/maven2</url>
     </repository>
   </repositories>
